@@ -1,0 +1,67 @@
+<?php
+declare(strict_types=1);
+
+require_once __DIR__ . "/../../data/vehiculos_bbdd.php";
+
+require_once __DIR__ . "/../../models/vehiculos/Vehiculo.php";
+require_once __DIR__ . "/../../models/vehiculos/Coche.php";
+require_once __DIR__ . "/../../models/vehiculos/Moto.php";
+
+class VehiculoController
+{
+    // Atributos
+    private $vehiculos = [];
+
+    /**
+     * Contructor
+     * 
+     * Al iniciar el contructor se carga el atributo $vehiculos con el parque de vehiculos. 
+     */
+    public function __construct()
+    {
+        $this->vehiculos = $this->leerVehiculos();
+    }
+
+    /**
+     * Carga los datos de vehiculos desde una BBDD como objetos tipo Vehiculo.
+     * 
+     * @param array $data Array asociativo con la información de los vehiculos.
+     * @return array Lista de objetos Vehiculo.
+     */
+    private function leerVehiculos(array $data = VEHICULOS): array
+    {
+        foreach ($data as $v) {
+
+            if ($v["tipo"] === "coche") {
+
+                $this->vehiculos[] = new Coche(
+                    (int) $v["id"],
+                    (string) $v["marca"],
+                    (string) $v["modelo"],
+                    (int) $v["anio"],
+                    (string) $v["tipo"],
+                    (int) $v["puertas"]
+                );
+
+            } elseif ($v["tipo"] === "moto") {
+
+                $this->vehiculos[] = new Moto(
+                    (int) $v["id"],
+                    (string) $v["marca"],
+                    (string) $v["modelo"],
+                    (int) $v["anio"],
+                    (string) $v["tipo"],
+                    (bool) $v["sidecar"]
+                );
+            }
+        }
+
+        return $this->vehiculos;
+    }
+
+    // Getters
+    public function getVehiculos(): array
+    {
+        return $this->vehiculos;
+    }
+}
