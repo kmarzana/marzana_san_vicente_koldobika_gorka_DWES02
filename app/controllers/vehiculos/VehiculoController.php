@@ -23,6 +23,52 @@ class VehiculoController
     }
 
     /**
+     * Crea y almacena un objeto Vehiculo a partir de una cadena JSON.
+     * 
+     * @param string $json
+     * @return Coche|Moto|null Objeto Vehiculo o null si el tipo no es válido.
+     */
+    public function store(string $json): ?Vehiculo
+    {
+        $data = json_decode($json, true);
+
+        $vehiculo = null;
+
+        if ($data["tipo"] === "coche") {
+
+            $vehiculo = new Coche(
+                (int) $data["id"],
+                (string) $data["marca"],
+                (string) $data["modelo"],
+                (int) $data["anio"],
+                (string) $data["tipo"],
+                (int) $data["puertas"]
+            );
+
+            $this->vehiculos[] = $vehiculo;
+
+        } elseif ($data["tipo"] === "moto") {
+
+            $vehiculo = new Moto(
+                (int) $data["id"],
+                (string) $data["marca"],
+                (string) $data["modelo"],
+                (int) $data["anio"],
+                (string) $data["tipo"],
+                (bool) $data["sidecar"]
+            );
+
+            $this->vehiculos[] = $vehiculo;
+
+        } else {
+
+            return null;
+        }
+
+        return $vehiculo;
+    }
+
+    /**
      * Busca y devuelve un objeto Vehiculo por su identificador único.
      * 
      * @param int $id Identificador único.
@@ -31,7 +77,7 @@ class VehiculoController
     public function getById(int $id): ?Vehiculo
     {
         foreach ($this->vehiculos as $vehiculo) {
-            if ($vehiculo->getId() === $id) {                
+            if ($vehiculo->getId() === $id) {
                 return $vehiculo;
             }
         }
