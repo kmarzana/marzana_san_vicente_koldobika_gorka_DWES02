@@ -23,6 +23,23 @@ class VehiculoController
     }
 
     /**
+     * Busca y devuelve un objeto Vehiculo por su identificador único.
+     * 
+     * @param int $id Identificador único.
+     * @return Coche|Moto|null Objeto Vehiculo si existe, null si no lo encuentra.
+     */
+    public function getById(int $id): ?Vehiculo
+    {
+        foreach ($this->vehiculos as $vehiculo) {
+            if ($vehiculo->getId() === $id) {                
+                return $vehiculo;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Carga los datos de vehiculos desde una BBDD como objetos tipo Vehiculo.
      * 
      * @param array $data Array asociativo con la información de los vehiculos.
