@@ -15,12 +15,12 @@ function request(VehiculoController $controller): void
 
     if ($method === "GET") {
         $vehiculo = $controller->getById((int) $_GET["id"]);
-        // var_dump($vehiculo);
+        require_once __DIR__ . "/../app/views/vehiculos/get.php";
     }
 
     if ($method === "POST") {
         $vehiculo = $controller->store($_POST["jsonPost"]);
-        // var_dump($vehiculo);
+        require_once __DIR__ . "/../app/views/vehiculos/post.php";
     }
 }
 
